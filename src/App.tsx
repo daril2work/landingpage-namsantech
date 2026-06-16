@@ -3,7 +3,6 @@ import NetworkBackground from './components/NetworkBackground';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import FadeInSection from './components/FadeInSection';
-import CosmicSplash from './components/CosmicSplash';
 
 const About = lazy(() => import('./components/About'));
 const Skills = lazy(() => import('./components/Skills'));
@@ -13,24 +12,9 @@ const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const toggleTheme = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setIsFadingOut(false);
-    
-    // Switch theme and start fade out simultaneously at exactly 1 second
-    setTimeout(() => {
-      setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-      setIsFadingOut(true);
-    }, 1000);
-
-    // End animation and remove overlay after 2.5s
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 2500);
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   useEffect(() => {
@@ -50,8 +34,7 @@ function App() {
   return (
     <>
       <NetworkBackground />
-      {isAnimating && <CosmicSplash theme={theme} isFadingOut={isFadingOut} />}
-      <div style={{ position: 'relative', zIndex: 1, pointerEvents: isAnimating ? 'none' : 'auto' }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
         <Navbar toggleTheme={toggleTheme} currentTheme={theme} />
         <main>
           <Hero />
