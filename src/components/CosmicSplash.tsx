@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from 'react';
 
 interface CosmicSplashProps {
   theme: 'dark' | 'light';
+  isFadingOut: boolean;
 }
 
-const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
+const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme, isFadingOut }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -95,15 +96,12 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
         ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
-        
-        // Add glow
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = p.color;
+        // Removed heavy shadowBlur to drastically improve FPS smoothness
       });
 
-      // Fade out canvas globally after 1 second (approx 60 frames)
-      if (frameCount > 60) {
-        opacity -= 0.03;
+      // Fade out canvas slightly earlier inside the wrapper
+      if (frameCount > 80) {
+        opacity -= 0.05;
         if (opacity < 0) opacity = 0;
         canvas.style.opacity = opacity.toString();
       }
@@ -128,8 +126,9 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: theme === 'dark' ? 'rgba(5,5,5,0.8)' : 'rgba(245,245,245,0.8)',
-      transition: 'background 0.5s ease'
+      background: theme === 'dark' ? 'rgba(5,5,5,0.95)' : 'rgba(245,245,245,0.95)',
+      opacity: isFadingOut ? 0 : 1,
+      transition: 'opacity 1s ease-out, background 0.5s ease'
     }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>

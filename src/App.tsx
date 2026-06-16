@@ -14,15 +14,22 @@ const Footer = lazy(() => import('./components/Footer'));
 function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const toggleTheme = () => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setIsFadingOut(false);
     
     // Switch theme halfway through the explosion animation
     setTimeout(() => {
       setTheme(prev => prev === 'dark' ? 'light' : 'dark');
     }, 800);
+
+    // Start fade out smoothly
+    setTimeout(() => {
+      setIsFadingOut(true);
+    }, 1500);
 
     // End animation after 2.5s
     setTimeout(() => {
@@ -47,7 +54,7 @@ function App() {
   return (
     <>
       <NetworkBackground />
-      {isAnimating && <CosmicSplash theme={theme} />}
+      {isAnimating && <CosmicSplash theme={theme} isFadingOut={isFadingOut} />}
       <div style={{ position: 'relative', zIndex: 1, pointerEvents: isAnimating ? 'none' : 'auto' }}>
         <Navbar toggleTheme={toggleTheme} currentTheme={theme} />
         <main>
