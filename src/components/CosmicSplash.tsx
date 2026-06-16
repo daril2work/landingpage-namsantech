@@ -26,8 +26,8 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    // Create explosion particles
-    for (let i = 0; i < 400; i++) {
+    // Create explosion particles (reduced for performance)
+    for (let i = 0; i < 150; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 30 + 5;
       particles.push({
@@ -37,15 +37,17 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
         vy: Math.sin(angle) * speed,
         size: Math.random() * 3 + 1,
         life: 1,
-        decay: Math.random() * 0.015 + 0.005,
+        decay: Math.random() * 0.02 + 0.01,
         color: Math.random() > 0.5 ? '#a8ff00' : '#ffffff'
       });
     }
 
     let opacity = 1;
     let flash = 1;
+    let frameCount = 0;
 
     const render = () => {
+      frameCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Flash background effect
@@ -57,22 +59,23 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
 
       let activeParticles = 0;
       
-      // Draw neural connections
+      // Draw neural connections (limit to first 40 particles to prevent CPU freeze)
       ctx.beginPath();
-      for (let i = 0; i < particles.length; i++) {
+      const maxNodes = Math.min(particles.length, 40);
+      for (let i = 0; i < maxNodes; i++) {
         if (particles[i].life <= 0) continue;
-        for (let j = i + 1; j < particles.length; j++) {
+        for (let j = i + 1; j < maxNodes; j++) {
           if (particles[j].life <= 0) continue;
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = dx * dx + dy * dy;
-          if (dist < 10000) { // Connect close particles
+          if (dist < 15000) { 
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
           }
         }
       }
-      ctx.strokeStyle = `rgba(168, 255, 0, ${opacity * 0.1})`;
+      ctx.strokeStyle = `rgba(168, 255, 0, ${opacity * 0.3})`;
       ctx.stroke();
 
       // Draw particles
@@ -98,9 +101,9 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme }) => {
         ctx.shadowColor = p.color;
       });
 
-      // Fade out canvas globally
-      if (activeParticles < 100) {
-        opacity -= 0.02;
+      // Fade out canvas globally after 1 second (approx 60 frames)
+      if (frameCount > 60) {
+        opacity -= 0.03;
         if (opacity < 0) opacity = 0;
         canvas.style.opacity = opacity.toString();
       }
