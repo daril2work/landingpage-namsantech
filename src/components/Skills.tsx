@@ -22,7 +22,7 @@ const Skills: React.FC = () => {
           <div key={idx} className="neon-box" style={{
             padding: '2rem',
             borderRadius: '5px',
-            backgroundColor: 'rgba(5, 5, 5, 0.6)'
+            backgroundColor: 'var(--card-bg-light)'
           }}>
             <div style={{ 
               display: 'flex', 

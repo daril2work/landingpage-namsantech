@@ -59,7 +59,7 @@ const Contact: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; IDENTIFIER (NAME)</label>
             <input type="text" name="name" required style={{
-              background: 'rgba(5, 5, 5, 0.8)',
+              background: 'var(--card-bg)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
               color: 'var(--neon-green)',
@@ -71,7 +71,7 @@ const Contact: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; COMMLINK (EMAIL)</label>
             <input type="email" name="email" required style={{
-              background: 'rgba(5, 5, 5, 0.8)',
+              background: 'var(--card-bg)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
               color: 'var(--neon-green)',
@@ -83,7 +83,7 @@ const Contact: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; TRANSMISSION_DATA (MESSAGE)</label>
             <textarea name="message" required rows={5} style={{
-              background: 'rgba(5, 5, 5, 0.8)',
+              background: 'var(--card-bg)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
               color: 'var(--neon-green)',

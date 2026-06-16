@@ -8,7 +8,7 @@ const About: React.FC = () => {
       </h2>
 
       <div className="neon-box" style={{
-        backgroundColor: 'rgba(5, 5, 5, 0.8)',
+        backgroundColor: 'var(--card-bg)',
         borderRadius: '5px',
         overflow: 'hidden'
       }}>
