@@ -126,9 +126,9 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme, isFadingOut }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: theme === 'dark' ? 'rgba(5,5,5,0.95)' : 'rgba(245,245,245,0.95)',
+      background: theme === 'dark' ? '#050505' : '#f5f5f5',
       opacity: isFadingOut ? 0 : 1,
-      transition: 'opacity 1s ease-out, background 0.5s ease'
+      transition: 'opacity 1.5s ease-in-out, background 0.5s ease'
     }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>

@@ -21,17 +21,13 @@ function App() {
     setIsAnimating(true);
     setIsFadingOut(false);
     
-    // Switch theme halfway through the explosion animation
+    // Switch theme and start fade out simultaneously at exactly 1 second
     setTimeout(() => {
       setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-    }, 800);
-
-    // Start fade out smoothly
-    setTimeout(() => {
       setIsFadingOut(true);
-    }, 1500);
+    }, 1000);
 
-    // End animation after 2.5s
+    // End animation and remove overlay after 2.5s
     setTimeout(() => {
       setIsAnimating(false);
     }, 2500);
