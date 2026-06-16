@@ -115,7 +115,7 @@ const CosmicSplash: React.FC<CosmicSplashProps> = ({ theme, isFadingOut }) => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [theme]);
+  }, []);
 
   return (
     <div style={{
