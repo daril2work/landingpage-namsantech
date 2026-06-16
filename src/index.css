@@ -8,10 +8,10 @@
 }
 
 :root.light-mode {
-  --neon-green: #7acc00;
+  --neon-green: #ff003c; /* Cyberpunk Red */
   --bg-color: #f5f5f5;
   --text-gray: #333333;
-  --grid-color: rgba(122, 204, 0, 0.15);
+  --grid-color: rgba(255, 0, 60, 0.15);
 }
 
 * {
