@@ -4,10 +4,22 @@ import { Mail, Code, Briefcase, Send } from 'lucide-react';
 const Contact: React.FC = () => {
   const [status, setStatus] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('TRANSMISSION_SENT');
-    setTimeout(() => setStatus(''), 3000);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData as any).toString()
+    })
+    .then(() => {
+      setStatus('TRANSMISSION_SENT_SUCCESSFULLY');
+      form.reset();
+      setTimeout(() => setStatus(''), 5000);
+    })
+    .catch((error) => setStatus('TRANSMISSION_FAILED: ' + error));
   };
 
   return (
@@ -36,10 +48,11 @@ const Contact: React.FC = () => {
           </a>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <form name="contact" data-netlify="true" onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <input type="hidden" name="form-name" value="contact" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; IDENTIFIER (NAME)</label>
-            <input type="text" required style={{
+            <input type="text" name="name" required style={{
               background: 'rgba(5, 5, 5, 0.8)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
@@ -51,7 +64,7 @@ const Contact: React.FC = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; COMMLINK (EMAIL)</label>
-            <input type="email" required style={{
+            <input type="email" name="email" required style={{
               background: 'rgba(5, 5, 5, 0.8)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
@@ -63,7 +76,7 @@ const Contact: React.FC = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; TRANSMISSION_DATA (MESSAGE)</label>
-            <textarea required rows={5} style={{
+            <textarea name="message" required rows={5} style={{
               background: 'rgba(5, 5, 5, 0.8)',
               border: '1px solid rgba(168, 255, 0, 0.3)',
               padding: '1rem',
