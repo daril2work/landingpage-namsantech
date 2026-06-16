@@ -9,15 +9,22 @@ const Contact: React.FC = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
     
-    fetch('/', {
+    // Add Web3Forms access key
+    formData.append("access_key", "0b33b20e-b548-4854-9da1-d03320f277e3");
+
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData as any).toString()
+      body: formData
     })
-    .then(() => {
-      setStatus('TRANSMISSION_SENT_SUCCESSFULLY');
-      form.reset();
-      setTimeout(() => setStatus(''), 5000);
+    .then(async (response) => {
+      const data = await response.json();
+      if (data.success) {
+        setStatus('TRANSMISSION_SENT_SUCCESSFULLY');
+        form.reset();
+        setTimeout(() => setStatus(''), 5000);
+      } else {
+        setStatus('TRANSMISSION_FAILED: ' + data.message);
+      }
     })
     .catch((error) => setStatus('TRANSMISSION_FAILED: ' + error));
   };
@@ -48,8 +55,7 @@ const Contact: React.FC = () => {
           </a>
         </div>
 
-        <form name="contact" data-netlify="true" onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <input type="hidden" name="form-name" value="contact" />
+        <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="fira-code text-neon" style={{ fontSize: '0.9rem' }}>&gt; IDENTIFIER (NAME)</label>
             <input type="text" name="name" required style={{
